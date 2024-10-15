@@ -3,41 +3,27 @@ import logo from './logo.svg';
 import './App.css';
 
 
-async function requestNotificationPermission() {
-  const permission = await Notification.requestPermission();
-  if (permission === 'granted') {
-    console.log('Notification permission granted.');
-  } else {
-    console.log('Notification permission denied.');
-  }
-}
+async function getDisplayMedia() {
+  //const constraints = {video: videoOptions, audio: audioOptions};
 
-async function registerBackgroundSync() {
-  const registration = await navigator.serviceWorker.getRegistration();
-  if (registration) {
-    try {
-      await registration.sync.register('background-sync');
-      console.log('백그라운드 싱크  등록 registered');
-    } catch (error) {
-      console.error('백그라운드 에러:', error);
-    }
-  }
+  return await navigator.mediaDevices.getDisplayMedia().then(stream => {
+
+  }).catch(text => {
+    console.log(text)
+  });
 }
 
 function App() {
 
   useEffect(() => {
-    requestNotificationPermission();
+    getDisplayMedia();
   }, []);
 
-  const handleSync = () => {
-    registerBackgroundSync();
-  };
 
   return (
       <div>
         <h1>PWA with Background Sync</h1>
-        <button onClick={handleSync}>백그라운드 동기화 요청</button>
+        <button>백그라운드 동기화 요청</button>
       </div>
   );
 }
